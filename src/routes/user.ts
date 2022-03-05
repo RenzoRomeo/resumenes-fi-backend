@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import File from '../models/File';
 
 import User from '../models/User';
 
@@ -26,7 +27,7 @@ router.post('/new', async (req, res) => {
   }
 });
 
-router.put('/update/:id', async (req, res) => {
+router.post('/:id/update', async (req, res) => {
   const id = req.params.id;
   const data = req.body;
   try {
@@ -38,12 +39,12 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
-router.put('/addfile/:id', async (req, res) => {
-  const id = req.params.id;
-  const data = req.body;
+router.post('/:id/addfile', async (req, res) => {
+  const { id } = req.params;
+  const { fileId } = req.body;
   try {
     await User.findByIdAndUpdate(id, {
-      $push: { files: data },
+      $push: { files: fileId },
     });
     res.status(200).json({ message: 'File added' });
   } catch (error) {
@@ -52,8 +53,34 @@ router.put('/addfile/:id', async (req, res) => {
   }
 });
 
+router.post('/:id/deletefile', async (req, res) => {
+  const { id } = req.params;
+  const { fileId } = req.body;
+  try {
+    await User.findByIdAndUpdate(id, {
+      $pull: { files: fileId },
+    });
+  } catch (error) {
+    console.error(error);
+    res.json({ error });
+  }
+});
+
+router.get('/:id/files', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    const fileIds = user.files;
+    const files = await File.find({ _id: { $in: fileIds } });
+    res.status(200).json(files);
+  } catch (error) {
+    console.error(error);
+    res.json({ error });
+  }
+});
+
 router.get('/:id', async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   try {
     const user = await User.findById(id);
     res.status(200).json(user);

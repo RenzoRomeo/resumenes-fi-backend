@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/app.ts",
+    "dev": "ts-node-dev src/app.ts",
     "build": "npx tsc",
     "start": "node src/app.js"
   },
@@ -16,9 +16,10 @@
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "mongoose": "^6.2.4",
+    "morgan": "^1.10.0",
     "ts-node": "^10.6.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "ts-node-dev": "^1.1.8"
   }
 }
