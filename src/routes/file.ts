@@ -6,7 +6,9 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-    const files = await File.find({});
+    const limit = parseInt(req.query.limit as string) || 10;
+    const page = parseInt(req.query.page as string) || 1;
+    const files = await File.paginate({}, { limit, page });
     res.status(200).json(files);
   } catch (error) {
     console.error(error);

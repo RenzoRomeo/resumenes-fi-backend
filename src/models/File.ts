@@ -1,6 +1,7 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, PaginateModel } from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
 
-interface File {
+interface FileData {
   name: string;
   url: string;
   subject: string;
@@ -8,7 +9,7 @@ interface File {
   path: string;
 }
 
-const FileSchema = new Schema<File>(
+const FileSchema = new Schema<FileData>(
   {
     name: { type: String, required: true },
     url: { type: String, required: true },
@@ -19,4 +20,8 @@ const FileSchema = new Schema<File>(
   { timestamps: true }
 );
 
-export default model('File', FileSchema);
+FileSchema.plugin(paginate);
+
+interface FileDocument extends Document, FileData {}
+
+export default model<FileDocument, PaginateModel<FileDocument>>('File', FileSchema);
