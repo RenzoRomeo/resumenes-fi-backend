@@ -5,7 +5,7 @@ interface User {
   name: string;
   lastName: string;
   _id: string;
-  lastSeen?: string;
+  lastSeen?: Date;
   files?: string[];
 }
 
@@ -15,7 +15,7 @@ const UserSchema = new Schema<User>(
     name: { type: String, required: true },
     lastName: { type: String, required: true },
     _id: { type: String, required: true },
-    lastSeen: String,
+    lastSeen: Date,
     files: [String],
   },
   { timestamps: true }
