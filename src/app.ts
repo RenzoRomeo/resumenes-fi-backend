@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 
 import { connectDB } from './database';
-import userRouter from './routes/user';
-import fileRouter from './routes/file';
+import userRouter from './controllers/user';
+import fileRouter from './controllers/file';
 
 const port = process.env.PORT || 5000;
 
